@@ -5,8 +5,15 @@ import (
 	"genq/pkg/genq"
 )
 
+type Person struct {
+	Name string
+	Age  int
+}
+
 func main() {
-	s := []int{1, 2, 3, 4}
+	s := []*Person{{"yamada", 13}, {"suzuki", 29}, {"yoshida", 41}, {"tanaja", 9}}
 	q := genq.From(s)
-	fmt.Println(q.ToSlice())
+	q1 := genq.Where(q, func(p *Person) bool { return p.Age >= 20 })
+	q2 := genq.Select(q1, func(p *Person) string { return p.Name })
+	fmt.Println(q2.ToSlice())
 }
