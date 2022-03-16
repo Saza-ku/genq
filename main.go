@@ -12,6 +12,12 @@ type Person struct {
 	Point      int
 }
 
+type Book struct {
+	id      int
+	title   string
+	authors []string
+}
+
 func main() {
 	s := []Person{
 		{"kazuki", "yamada", 13, 27}, {"hanako", "suzuki", 29, 43}, {"kengo", "yoshida", 41, 82}, {"momoka", "tanaka", 9, 23},
@@ -44,4 +50,40 @@ func main() {
 			genq.From(s),
 		).ToSlice()
 	fmt.Println(z)
+
+	books := []Book{
+		{0, "hoge", []string{"asano", "yoshida"}},
+		{0, "hoge", []string{"kamiki"}},
+		{0, "hoge", []string{"hamada", "matsumoto", "kamiki"}},
+		{0, "hoge", []string{"kawai", "suzuki"}},
+		{0, "hoge", []string{"harada", "asano", "himura", "matsumoto"}},
+		{0, "hoge", []string{"ota", "furusawa"}},
+		{0, "hoge", []string{"uchida", "kawai", "suzuki"}},
+		{0, "hoge", []string{"matsumoto"}},
+		{0, "hoge", []string{"asano", "hamada"}},
+		{0, "hoge", []string{"kuwahara"}},
+	}
+
+	fmt.Println("===============================================================")
+
+	fmt.Println(genq.SelectMany(
+		func(b Book) []string { return b.authors },
+		genq.From(books),
+	).ToSlice())
+
+	a, _ :=
+		genq.Select(
+			func(g genq.Group[string, string]) string { return g.Key },
+			genq.OrderByDescending(
+				func(g genq.Group[string, string]) int { return len(g.Group) },
+				genq.GroupBy(
+					func(a string) string { return a },
+					genq.SelectMany(
+						func(b Book) []string { return b.authors },
+						genq.From(books),
+					),
+				),
+			),
+		).First()
+	fmt.Println(a)
 }

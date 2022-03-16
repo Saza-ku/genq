@@ -14,3 +14,8 @@ func (q Query[T]) ToSlice() []T {
 	}
 	return slice
 }
+
+func (q Query[T]) First() (first T, ok bool) {
+	next := q.Iterate()
+	return next()
+}
