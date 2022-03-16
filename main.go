@@ -38,4 +38,10 @@ func main() {
 			),
 		).ToSlice()
 	fmt.Println(y)
+
+	z :=
+		genq.OrderBy(func(p Person) int { return p.Age },
+			genq.From(s),
+		).ToSlice()
+	fmt.Println(z)
 }
