@@ -1,6 +1,6 @@
 package genq
 
-func Select[X, Y any](q Query[X], selector func(X) Y) Query[Y] {
+func Select[X, Y any](selector func(X) Y, q Query[X]) Query[Y] {
 	return Query[Y]{
 		Iterate: func() Iterator[Y] {
 			next := q.Iterate()

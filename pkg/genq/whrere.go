@@ -1,6 +1,6 @@
 package genq
 
-func Where[T any](q Query[T], predicate func(T) bool) Query[T] {
+func Where[T any](predicate func(T) bool, q Query[T]) Query[T] {
 	return Query[T]{
 		Iterate: func() Iterator[T] {
 			next := q.Iterate()
