@@ -24,7 +24,7 @@ type Book struct {
 }
 
 func main() {
-	s := []Person{
+	s := &[]Person{
 		{"kazuki", "yamada", 13, 27}, {"hanako", "suzuki", 29, 43}, {"kengo", "yoshida", 41, 82}, {"momoka", "tanaka", 9, 23},
 		{"ryoya", "yamada", 83, 90}, {"takumi", "suzuki", 92, 43}, {"fumi", "yoshida", 8, 62}, {"ayumi", "tanaka", 12, 89},
 		{"kei", "yamada", 63, 10}, {"hibiki", "suzuki", 31, 43}, {"fuka", "yoshida", 47, 97}, {"nanami", "tanaka", 120, 71},
@@ -41,7 +41,7 @@ func main() {
 
 	y :=
 		genq.Select(func(g genq.Group[string, Person]) int {
-			return genq.Sum(genq.Select(func(p Person) int { return p.Point }, genq.From(g.Group)))
+			return genq.Sum(genq.Select(func(p Person) int { return p.Point }, genq.From(&g.Group)))
 		},
 			genq.GroupBy(
 				func(p Person) string { return p.FamilyName },
@@ -56,7 +56,7 @@ func main() {
 		).ToSlice()
 	fmt.Println(z)
 
-	books := []Book{
+	books := &[]Book{
 		{0, "hoge", []string{"asano", "yoshida"}},
 		{0, "hoge", []string{"kamiki"}},
 		{2, "hoge", []string{"hamada", "matsumoto", "kamiki"}},
@@ -94,7 +94,7 @@ func main() {
 
 	fmt.Println("================================================================")
 
-	stores := []Store{
+	stores := &[]Store{
 		{0, "tokyo"},
 		{1, "kyoto"},
 		{2, "shiga"},
@@ -111,4 +111,10 @@ func main() {
 			genq.From(books),
 		).ToSlice()
 	fmt.Println(b)
+
+	fmt.Println("================================================================")
+	cs := []int{1, 2, 3, 4, 5}
+	cq := genq.From(&cs)
+	cs = append(cs, 6)
+	fmt.Println(genq.Aggregate(func(s, x int) int { return s + x }, cq))
 }
