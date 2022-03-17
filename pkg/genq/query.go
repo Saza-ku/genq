@@ -1,3 +1,8 @@
+/*
+This file is derived from go-linq and modified.
+go-linq : https://github.com/ahmetb/go-linq
+*/
+
 package genq
 
 type Iterator[T any] func() (item T, ok bool)
