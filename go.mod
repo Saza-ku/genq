@@ -1,3 +1,3 @@
-module github.com/Saza-ku/go-genq/v1
+module github.com/Saza-ku/genq
 
 go 1.18
