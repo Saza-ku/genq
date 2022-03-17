@@ -12,10 +12,15 @@ type Person struct {
 	Point      int
 }
 
+type Store struct {
+	Id   int
+	Name string
+}
+
 type Book struct {
-	id      int
-	title   string
-	authors []string
+	StoreId int
+	Title   string
+	Authors []string
 }
 
 func main() {
@@ -54,20 +59,20 @@ func main() {
 	books := []Book{
 		{0, "hoge", []string{"asano", "yoshida"}},
 		{0, "hoge", []string{"kamiki"}},
-		{0, "hoge", []string{"hamada", "matsumoto", "kamiki"}},
-		{0, "hoge", []string{"kawai", "suzuki"}},
-		{0, "hoge", []string{"harada", "asano", "himura", "matsumoto"}},
-		{0, "hoge", []string{"ota", "furusawa"}},
-		{0, "hoge", []string{"uchida", "kawai", "suzuki"}},
-		{0, "hoge", []string{"matsumoto"}},
-		{0, "hoge", []string{"asano", "hamada"}},
-		{0, "hoge", []string{"kuwahara"}},
+		{2, "hoge", []string{"hamada", "matsumoto", "kamiki"}},
+		{2, "hoge", []string{"kawai", "suzuki"}},
+		{2, "hoge", []string{"harada", "asano", "himura", "matsumoto"}},
+		{3, "hoge", []string{"ota", "furusawa"}},
+		{5, "hoge", []string{"uchida", "kawai", "suzuki"}},
+		{5, "hoge", []string{"matsumoto"}},
+		{5, "hoge", []string{"asano", "hamada"}},
+		{6, "hoge", []string{"kuwahara"}},
 	}
 
 	fmt.Println("===============================================================")
 
 	fmt.Println(genq.SelectMany(
-		func(b Book) []string { return b.authors },
+		func(b Book) []string { return b.Authors },
 		genq.From(books),
 	).ToSlice())
 
@@ -79,11 +84,31 @@ func main() {
 				genq.GroupBy(
 					func(a string) string { return a },
 					genq.SelectMany(
-						func(b Book) []string { return b.authors },
+						func(b Book) []string { return b.Authors },
 						genq.From(books),
 					),
 				),
 			),
 		).First()
 	fmt.Println(a)
+
+	fmt.Println("================================================================")
+
+	stores := []Store{
+		{0, "tokyo"},
+		{1, "kyoto"},
+		{2, "shiga"},
+		{3, "osaka"},
+		{4, "chiba"},
+		{5, "okinawa"},
+		{6, "hokkaido"},
+	}
+
+	b :=
+		genq.Join(
+			func(s Store, b Book) bool { return s.Id == b.StoreId },
+			genq.From(stores),
+			genq.From(books),
+		).ToSlice()
+	fmt.Println(b)
 }

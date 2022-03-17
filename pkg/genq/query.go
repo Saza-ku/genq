@@ -19,3 +19,20 @@ func (q Query[T]) First() (first T, ok bool) {
 	next := q.Iterate()
 	return next()
 }
+
+func (q Query[T]) Any() bool {
+	_, ok := q.Iterate()()
+	return ok
+}
+
+func (q Query[T]) AnyWith(predicate func(T) bool) bool {
+	next := q.Iterate()
+
+	for item, ok := next(); ok; item, ok = next() {
+		if predicate(item) {
+			return true
+		}
+	}
+
+	return false
+}
