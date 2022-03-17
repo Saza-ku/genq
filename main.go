@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"genq/pkg/genq"
+
+	"github.com/Saza-ku/go-genq/pkg/genq"
 )
 
 type Person struct {
