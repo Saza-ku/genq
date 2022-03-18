@@ -9,3 +9,7 @@ This library targets Go1.18
 ```
 go get github.com/Saza-ku/genq
 ```
+
+## License
+MIT License is applied to this library. See [LICENSE](https://github.com/Saza-ku/go-genq/blob/main/LICENSE).  
+This library is derived from [go-linq](https://github.com/ahmetb/go-linq).
